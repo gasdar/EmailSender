@@ -14,6 +14,9 @@ public class EmailConfig {
     @Value(value = "${email.sender}")
     private String sender;
 
+    @Value(value = "${email.pass}")
+    private String pass;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -21,13 +24,13 @@ public class EmailConfig {
         mailSender.setHost("smtp.gmail.com"); // Host donde se realizará la comunicación, para enviar un email
         mailSender.setPort(587);
         mailSender.setUsername(sender);
-        mailSender.setPassword("randomusern01"); // Para producción, hay que agregar mayor seguridad
+        mailSender.setPassword(pass); // Para producción, hay que agregar mayor seguridad
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true"); // por medio del protocolo smtp, el usuario se autentica con las credenciales, y si son incorrectas, no se puede realizar el proceso
-        props.put("mail.smtp.starttls", "true"); // La comunicación por smtp, en todo momento esta cifrado
-        props.put("mail.debug", "true"); // Mostrar mensajes
+        props.put("mail.smtp.starttls.enable", "true"); // La comunicación por smtp, en todo momento esta cifrado
+        props.put("mail.debug", "false"); // Mostrar mensajes
 
         return mailSender;
     }
